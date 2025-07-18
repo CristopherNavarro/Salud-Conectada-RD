@@ -18,18 +18,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+ children,
+}: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          ptSans.variable
-        )}
-      >
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body className={cn("min-h-screen bg-background font-sans antialiased", ptSans.variable)}>
         <div className="relative flex min-h-dvh flex-col bg-background">
           <Header />
           <main className="flex-1">{children}</main>
