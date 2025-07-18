@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HandHelping, Stethoscope, HeartHandshake } from "lucide-react";
 import Image from "next/image";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 import Link from "next/link";
 
 export default function Home() {
@@ -29,14 +31,35 @@ export default function Home() {
                   <Link href="/voluntarios">Quiero Ser Voluntario</Link>
                 </Button>
               </div>
+
             </div>
-            <Image
-              src="https://placehold.co/600x400.png"
-              width="600"
-              height="400"
-              alt="Hero"
-              data-ai-hint="doctor patient community"
+            <Carousel
+              showArrows={true}
+              showIndicators={true}
+              autoPlay={true}
+              interval={4000}
+              infiniteLoop={true}
+              showThumbs={false}
               className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
+            >
+              <div>
+                <Image src="/image1.jpg" alt="Image 1" width={600} height={400} />
+              </div>
+              <div>
+                <Image src="/image2.jpg" alt="Image 2" width={600} height={400} />
+              </div>
+              <div>
+                <Image src="/image3.jpg" alt="Image 3" width={600} height={400} />
+              </div>
+              <div>
+                <Image src="/image4.jpg" alt="Image 4" width={600} height={400} />
+              </div>
+              <div>
+                <Image src="/image5.jpg" alt="Image 5" width={600} height={400} />
+              </div>
+            </Carousel>
+            <Image src="https://placehold.co/600x400.png" width="600" height="400" alt="Hero" data-ai-hint="doctor patient community"
+
             />
           </div>
         </div>
