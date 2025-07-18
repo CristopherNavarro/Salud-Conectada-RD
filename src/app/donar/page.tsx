@@ -8,7 +8,7 @@ export default function DonarPage() {
           Dona Insumos Médicos
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          Tu donación de insumos como sillas de ruedas, muletas, y otros equipos médicos es vital para pacientes que no pueden costearlos. Ayúdanos a mejorar su calidad de vida.
+          Tu donación de insumos como sillas de ruedas, muletas, camillas y otros equipos médicos es vital para pacientes que no pueden costearlos. Ayúdanos a mejorar su calidad de vida.
         </p>
       </div>
       <DonacionForm />

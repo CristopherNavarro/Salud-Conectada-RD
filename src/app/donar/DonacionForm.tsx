@@ -40,8 +40,8 @@ export function DonacionForm() {
       const result = await registrarDonacion(data);
       if (result.success) {
         toast({
-          title: "¡Gracias por tu Generosidad!",
-          description: "Hemos recibido tu registro de donación. Te contactaremos pronto para coordinar la entrega.",
+          title: "¡Gracias por tu generosidad!",
+          description: "Tu generosidad hace la diferencia. Gracias por tu donación, te contactaremos para coordinar la entrega.",
         });
         form.reset();
       } else {
@@ -67,7 +67,7 @@ export function DonacionForm() {
               name="nombreDonante"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre del Donante o Institución</FormLabel>
+                  <FormLabel>Nombre del Donante</FormLabel>
                   <FormControl>
                     <Input placeholder="Ej. Familia García / Empresa XYZ" {...field} />
                   </FormControl>
