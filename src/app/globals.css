@@ -69,7 +69,9 @@
 }
 
 @media (max-width: 768px) {
-  /* Header Fixes */
+  /* PASO 1: Reparación Total del Encabezado (Header) */
+
+  /* 1.1 - RESTAURAR VISIBILIDAD & 1.2 - ALINEACIÓN DEL CONTENEDOR PRINCIPAL */
   /* Target the mobile header container */
   header .container > div:nth-child(2) {
     display: flex !important;
@@ -78,17 +80,32 @@
     padding: 0 16px !important;
   }
 
-  header .container > div:nth-child(2) > * {
-     display: initial !important;
+  /* Ensure the first child (Logo component) within the mobile header container is displayed and visible */
+  header .container > div:nth-child(2) > :first-child {
+     display: block !important;
+     visibility: visible !important;
+     opacity: 1 !important;
   }
 
-  /* Hero Section Fixes */
+  /* 1.3 - CENTRADO DEL ICONO HAMBURGUESA */
+  /* Target the button containing the hamburger icon */
+  header .container > div:nth-child(2) .inline-flex.items-center.justify-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+
+  /* PASO 2: Reparación Definitiva de la Sección Principal (Hero) */
+
+  /* 2.1 - ESTRUCTURA DE POSICIONAMIENTO (Contenedor Padre) */
   /* Target the hero section container */
   section.relative.w-full.h-screen.overflow-hidden {
     height: 100vh !important;
     position: relative !important;
   }
 
+  /* 2.1 - ESTRUCTURA DE POSICIONAMIENTO (Contenedor Hijo) & 2.2 - CENTRADO DEL CONTENIDO SUPERPUESTO & 2.3 - CAPA DE LEGIBILIDAD */
   /* Target the hero content container (direct child of hero section) */
   section.relative.w-full.h-screen.overflow-hidden > div:nth-child(2) {
     position: absolute !important;
@@ -102,6 +119,7 @@
     justify-content: center !important;
     align-items: center !important;
     text-align: center !important;
+    padding: 16px !important;
   }
 
   /* "Sobre Nosotros" Image Fixes */
