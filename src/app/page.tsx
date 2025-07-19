@@ -1,11 +1,22 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HandHelping, Stethoscope, HeartHandshake, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ImageCarousel from "@/components/ImageCarousel";
+import { toast } from "@/hooks/use-toast"; // Corrected import path
 
 export default function Home() {
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("saludconectadard@gmail.com");
+    toast({
+      title: "Correo Copiado",
+      description: "La dirección de correo electrónico ha sido copiada al portapapeles.",
+    });
+  };
+
   return (
     <div className="flex flex-col min-h-dvh">
       <section className="relative w-full h-screen overflow-hidden">
@@ -48,7 +59,7 @@ export default function Home() {
             </div>
             <div className="relative h-[400px] w-full">
               <Image
-                src="/image6.jpg"
+                src="/image6_nuevo.jpg"
                 alt="Equipo de voluntarios de Salud Conectada RD"
                 layout="fill"
                 objectFit="cover"
@@ -136,12 +147,12 @@ export default function Home() {
           <p className="max-w-[700px] text-lg md:text-xl mb-8">
             Estamos aquí para ayudarte. Si tienes cualquier duda sobre nuestro funcionamiento, quieres proponer una colaboración o necesitas soporte, no dudes en escribirnos.
           </p>
-          <a
-            href="mailto:saludconectadard@gmail.com"
+          <button
+            onClick={handleCopyEmail}
             className="mt-4 inline-block px-8 py-4 border-2 border-white text-white text-lg font-semibold rounded-full transition-colors duration-300 hover:bg-white hover:text-[#007bff]"
           >
             saludconectadard@gmail.com
-          </a>
+          </button>
         </div>
       </section>
 
