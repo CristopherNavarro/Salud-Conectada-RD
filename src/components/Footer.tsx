@@ -1,5 +1,6 @@
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { Logo } from "./Logo";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -10,15 +11,9 @@ export function Footer() {
           © {new Date().getFullYear()} Salud Conectada RD. Todos los derechos reservados.
         </p>
         <div className="flex gap-4">
-          <a href="#" aria-label="Facebook" className="text-muted-foreground hover:text-primary">
-            <Facebook size={20} />
-          </a>
-          <a href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary">
-            <Twitter size={20} />
-          </a>
-          <a href="#" aria-label="Instagram" className="text-muted-foreground hover:text-primary">
+          <Link href="https://www.instagram.com/saludconectadard/?utm_source=ig_web_button_share_sheet" aria-label="Instagram" className="text-muted-foreground hover:text-primary" target="_blank" rel="noopener noreferrer">
             <Instagram size={20} />
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
