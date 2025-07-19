@@ -4,34 +4,32 @@ import { HandHelping, Stethoscope, HeartHandshake } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ImageCarousel from "@/components/ImageCarousel";
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-dvh">
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-primary/10">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-            <div className="flex flex-col justify-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
-                  Salud para todos, a un clic de distancia
-                </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                  Nuestra plataforma simplifica la solicitud de citas médicas y
-                  conecta a pacientes con una red de voluntarios dedicados en
-                  la República Dominicana.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Button asChild size="lg">
-                  <Link href="/citas">Solicitar Cita Médica</Link>
-                </Button>
-                <Button asChild size="lg" variant="secondary">
-                  <Link href="/voluntarios">Quiero Ser Voluntario</Link>
-                </Button>
-              </div>
-
+      <section className="relative w-full h-screen overflow-hidden">
+        <ImageCarousel />
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="container px-4 md:px-6 text-center text-white z-10">
+            <div className="space-y-4">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-6xl xl:text-7xl/none font-headline">
+                Salud para todos, a un clic de distancia
+              </h1>
+              <p className="max-w-[700px] text-lg md:text-xl mx-auto">
+                Nuestra plataforma simplifica la solicitud de citas médicas y
+                conecta a pacientes con una red de voluntarios dedicados en la
+                República Dominicana.
+              </p>
             </div>
-            <ImageCarousel />
+            <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center mt-8">
+              <Button asChild size="xl" className="px-8 py-6 text-lg">
+                <Link href="/citas">Solicitar Cita Médica</Link>
+              </Button>
+              <Button asChild size="xl" variant="secondary" className="px-8 py-6 text-lg">
+                <Link href="/voluntarios">Quiero Ser Voluntario</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
