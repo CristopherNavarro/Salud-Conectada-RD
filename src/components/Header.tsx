@@ -25,7 +25,7 @@ export function Header() {
         <div className="mr-4 hidden md:flex">
           <Logo />
         </div>
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center justify-between px-4 w-full md:hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -53,9 +53,7 @@ export function Header() {
             </Sheet>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            <Logo className="md:hidden"/>
-          </div>
+          {/* The mobile logo is now inside the flex container above */}
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
             {navLinks.map(({ href, label }) => (
               <Link
