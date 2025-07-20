@@ -8,7 +8,7 @@ const ImageCarousel = () => {
   return (
     <Carousel
       showArrows={false}
-      showIndicators={true}
+      showIndicators={false}
       autoPlay={true}
       showStatus={false}
       interval={4000}
