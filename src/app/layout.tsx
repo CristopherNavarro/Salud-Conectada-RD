@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+// AÑADIDO: Import del componente Script de Next.js
+import Script from "next/script";
 
 const ptSans = PT_Sans({
   subsets: ["latin"],
@@ -32,6 +34,12 @@ export default function RootLayout({
           <Footer />
         </div>
         <Toaster />
+        
+        {/* AÑADIDO: Script para integrar el Web Chat en toda la página */}
+        <Script
+          src="https://kirki.app.n8n.cloud/webhook/ea4c87e7-61f7-4266-937f-3f6c3047c2f3/chat"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

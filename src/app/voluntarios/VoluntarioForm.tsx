@@ -22,8 +22,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { voluntarioSchema, VoluntarioSchema } from "@/lib/schemas";
-import { handleVolunteerSubmission } from "@/lib/actions"; // Corrected import
+import { handleVolunteerSubmission } from "@/lib/actions";
 
+// MODIFICADO: Se añaden más áreas de interés
 const areasDeInteres = [
   {
     id: "acompanamiento",
@@ -36,6 +37,23 @@ const areasDeInteres = [
   {
     id: "brigadas",
     label: "Participar en brigadas comunitarias (apoyo emocional/logístico).",
+  },
+  // AÑADIDO: Nuevas áreas de interés
+  { 
+    id: "administrativo", 
+    label: "Apoyo en tareas administrativas y de oficina." 
+  },
+  {
+    id: "eventos",
+    label: "Ayuda en la organización de eventos para recaudar fondos.",
+  },
+  {
+    id: "charlas",
+    label: "Participar en charlas y talleres sobre salud preventiva.",
+  },
+  {
+    id: "transporte",
+    label: "Facilitar transporte para pacientes sin movilidad.",
   },
 ] as const;
 
@@ -57,8 +75,8 @@ export function VoluntarioForm() {
 
   function onSubmit(data: VoluntarioSchema) {
     startTransition(async () => {
-      const result = await handleVolunteerSubmission(null, data); // Pass data object directly
-      if (result.status === 'success') { // Checking status from the updated action
+      const result = await handleVolunteerSubmission(null, data);
+      if (result.status === 'success') {
         toast({
           title: "¡Registro Exitoso!",
           description: "¡Bienvenido al equipo! Nos pondremos en contacto contigo muy pronto para coordinar los siguientes pasos.",
@@ -82,6 +100,7 @@ export function VoluntarioForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* --- El resto del formulario no cambia, solo se renderizarán las nuevas opciones --- */}
             <FormField
               control={form.control}
               name="nombreCompleto"

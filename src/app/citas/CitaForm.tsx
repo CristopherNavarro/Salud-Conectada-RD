@@ -3,10 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState, useEffect, useTransition } from "react";
-import { CalendarIcon, Loader2, AlertCircle, Sparkles } from "lucide-react";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { useState, useTransition } from "react";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,64 +29,59 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { citaSchema, CitaSchema } from "@/lib/schemas";
-import { handleAppointmentSubmission } from "@/lib/actions"; // Corrected import
-import { useDebounce } from "@/hooks/use-debounce";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import type { DetectAppointmentUrgencyOutput } from "@/ai/flows/detect-appointment-urgency";
+import { handleAppointmentSubmission } from "@/lib/actions";
+
+// ELIMINADO: Ya no se usan los imports para la IA ni el calendario de nacimiento
+// import { CalendarIcon, AlertCircle, Sparkles } from "lucide-react";
+// import { format } from "date-fns";
+// import { es } from "date-fns/locale";
+// import { useDebounce } from "@/hooks/use-debounce";
+// import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// import { Calendar } from "@/components/ui/calendar";
+// import { cn } from "@/lib/utils";
+// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+// import type { DetectAppointmentUrgencyOutput } from "@/ai/flows/detect-appointment-urgency";
 
 export function CitaForm() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  const [isDetecting, startDetectingTransition] = useTransition();
-  const [urgencyResult, setUrgencyResult] = useState<DetectAppointmentUrgencyOutput | null>(null);
+  // ELIMINADO: Estados relacionados con la IA
+  // const [isDetecting, startDetectingTransition] = useTransition();
+  // const [urgencyResult, setUrgencyResult] = useState<DetectAppointmentUrgencyOutput | null>(null);
 
   const form = useForm<CitaSchema>({
     resolver: zodResolver(citaSchema),
+    // MODIFICADO: Valores por defecto actualizados
     defaultValues: {
       nombreCompleto: "",
       cedula: "",
-      fechaNacimiento: "",
+      edad: "",
       telefono: "",
       email: "",
       centroSalud: "",
+      fechaCita: "",
+      horaCita: "",
       motivoCita: "",
       necesitaAcompanante: false,
     },
   });
 
-  const motivoCita = form.watch("motivoCita");
-  const debouncedMotivo = useDebounce(motivoCita, 1000);
-
-  useEffect(() => {
-    if (debouncedMotivo && debouncedMotivo.length > 15) {
-      // detectAppointmentUrgency is not defined in actions.ts, so we remove this part
-      // startDetectingTransition(async () => {
-      //   const result = await detectAppointmentUrgency(debouncedMotivo);
-      //   setUrgencyResult(result);
-      // });
-    } else {
-      setUrgencyResult(null);
-    }
-  }, [debouncedMotivo]);
+  // ELIMINADO: Lógica y useEffect para detectar urgencia con IA
+  // const motivoCita = form.watch("motivoCita");
+  // const debouncedMotivo = useDebounce(motivoCita, 1000);
+  // useEffect(() => { ... });
 
   function onSubmit(data: CitaSchema) {
     startTransition(async () => {
-      const result = await handleAppointmentSubmission(null, data); // Pass data object directly
-      if (result.status === 'success') { // Checking status from the updated action
+      const result = await handleAppointmentSubmission(null, data);
+      if (result.status === 'success') {
         toast({
           title: "¡Solicitud Enviada!",
-          description:
-            "Hemos recibido tu solicitud. Recibirás una confirmación por WhatsApp y correo electrónico pronto.",
+          description: "Hemos recibido tu solicitud. Recibirás una confirmación por WhatsApp y correo electrónico pronto.",
         });
         form.reset();
-        setUrgencyResult(null);
+        // ELIMINADO: Limpieza del estado de la IA
+        // setUrgencyResult(null);
       } else {
         toast({
           variant: "destructive",
@@ -133,44 +126,27 @@ export function CitaForm() {
                 </FormItem>
               )}
             />
+            {/* MODIFICADO: Campo de Fecha de Nacimiento cambiado por Edad */}
             <FormField
               control={form.control}
-              name="fechaNacimiento"
+              name="edad"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Fecha de Nacimiento</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(new Date(field.value), "PPP", { locale: es })
-                          ) : (
-                            <span>Seleccione una fecha</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value ? new Date(field.value) : undefined}
-                        onSelect={(date) => field.onChange(date?.toISOString())}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                        locale={es}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                <FormItem>
+                  <FormLabel>Edad</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione su edad" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Array.from({ length: 100 }, (_, i) => i + 1).map(age => (
+                        <SelectItem key={age} value={String(age)}>
+                          {age} años
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -223,6 +199,48 @@ export function CitaForm() {
                 </FormItem>
               )}
             />
+            {/* AÑADIDO: Nuevos campos para Fecha y Hora de la cita */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="fechaCita"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fecha de la Cita</FormLabel>
+                    <FormControl>
+                      <Input placeholder="DD/MM/AAAA" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="horaCita"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Hora de la Cita</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccione una hora" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="08:00 AM">08:00 AM</SelectItem>
+                        <SelectItem value="09:00 AM">09:00 AM</SelectItem>
+                        <SelectItem value="10:00 AM">10:00 AM</SelectItem>
+                        <SelectItem value="11:00 AM">11:00 AM</SelectItem>
+                        <SelectItem value="02:00 PM">02:00 PM</SelectItem>
+                        <SelectItem value="03:00 PM">03:00 PM</SelectItem>
+                        <SelectItem value="04:00 PM">04:00 PM</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="motivoCita"
@@ -236,34 +254,12 @@ export function CitaForm() {
                       rows={4}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Esta información nos ayudará a entender la urgencia de su caso.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            {/* Removed AI urgency detection since the function is not in actions.ts */}
-            {/* {isDetecting && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Analizando urgencia...
-              </div>
-            )}
-            
-            {urgencyResult && (
-              <Alert variant={urgencyResult.isUrgent ? "destructive" : "default"}>
-                {urgencyResult.isUrgent ? <AlertCircle className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
-                <AlertTitle className="font-bold flex items-center gap-2">
-                  Análisis de Urgencia por IA: {urgencyResult.isUrgent ? "Urgente" : "No Urgente"}
-                </AlertTitle>
-                <AlertDescription>
-                  <p className="font-semibold">{urgencyResult.reason}</p>
-                  {urgencyResult.suggestedAction && <p className="mt-2">{urgencyResult.suggestedAction}</p>}
-                </AlertDescription>
-              </Alert>
-            )} */}
+            {/* ELIMINADO: Sección completa de análisis de urgencia por IA */}
 
             <FormField
               control={form.control}
