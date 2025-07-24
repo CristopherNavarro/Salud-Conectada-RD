@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const citaSchema = z.object({
   nombreCompleto: z.string().min(3, "El nombre es requerido."),
-  cedula: z.string().regex(/^d{3}-?d{7}-?d{1}$/, "Cédula inválida."),
+  // --- CORRECCIÓN AQUÍ ---
+  cedula: z.string().regex(/^(\d{3}-?\d{7}-?\d{1}|\d{11})$/, "Cédula inválida."), 
   fechaNacimiento: z.string().min(1, "La fecha de nacimiento es requerida."),
   telefono: z.string().min(10, "El número de teléfono es requerido."),
   email: z.string().email("Correo electrónico inválido."),
@@ -15,7 +16,8 @@ export type CitaSchema = z.infer<typeof citaSchema>;
 
 export const voluntarioSchema = z.object({
   nombreCompleto: z.string().min(3, "El nombre es requerido."),
-  cedula: z.string().regex(/^d{3}-?d{7}-?d{1}$/, "Cédula inválida."),
+  // --- CORRECCIÓN AQUÍ ---
+  cedula: z.string().regex(/^(\d{3}-?\d{7}-?\d{1}|\d{11})$/, "Cédula inválida."),
   telefono: z.string().min(10, "El número de teléfono es requerido."),
   email: z.string().email("Correo electrónico inválido."),
   areasInteres: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -29,7 +31,7 @@ export type VoluntarioSchema = z.infer<typeof voluntarioSchema>;
 export const donacionSchema = z.object({
   nombreDonante: z.string().min(3, "El nombre del donante es requerido."),
   telefonoContacto: z.string().min(10, "El número de teléfono es requerido."),
-  email: z.string().email("Correo electrónico inválido.").optional(), // Added email field as optional initially
+  email: z.string().email("Correo electrónico inválido.").optional(),
   descripcionInsumo: z.string().min(5, "La descripción es muy corta."),
 });
 
