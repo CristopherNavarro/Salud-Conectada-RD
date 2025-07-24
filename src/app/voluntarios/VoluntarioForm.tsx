@@ -22,7 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { voluntarioSchema, VoluntarioSchema } from "@/lib/schemas";
-import { registrarVoluntario } from "@/lib/actions";
+import { handleVolunteerSubmission } from "@/lib/actions"; // Corrected import
 
 const areasDeInteres = [
   {
@@ -57,8 +57,8 @@ export function VoluntarioForm() {
 
   function onSubmit(data: VoluntarioSchema) {
     startTransition(async () => {
-      const result = await registrarVoluntario(data);
-      if (result.success) {
+      const result = await handleVolunteerSubmission(null, data); // Pass data object directly
+      if (result.status === 'success') { // Checking status from the updated action
         toast({
           title: "¡Registro Exitoso!",
           description: "¡Bienvenido al equipo! Nos pondremos en contacto contigo muy pronto para coordinar los siguientes pasos.",

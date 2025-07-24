@@ -1,81 +1,64 @@
-"use server";
-
-import { z } from "zod";
-import { detectAppointmentUrgency as detectAppointmentUrgencyFlow } from "@/ai/flows/detect-appointment-urgency";
-import { citaSchema, donacionSchema, voluntarioSchema } from "./schemas";
-
-type FormState = {
-  success: boolean;
-  message: string;
-};
-
-const n8nWebhookUrls = {
-    nuevaCita: "https://kirki.app.n8n.cloud/webhook-test/pacientes",
-    nuevoVoluntario: "https://kirki.app.n8n.cloud/webhook-test/voluntarios",
-    nuevaDonacion: "https://kirki.app.n8n.cloud/webhook-test/donaciones",
-};
-
-async function postToWebhook(url: string, data: unknown): Promise<FormState> {
+export async function handleAppointmentSubmission(prevState: any, data: any) { // Changed to accept data object
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/pacientes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Sending the data object directly
     });
 
-    if (!response.ok) {
-      console.error("Webhook response not OK", { status: response.status, body: await response.text() });
-      return { success: false, message: "Hubo un problema al enviar su solicitud. Por favor, intente de nuevo." };
+    if (response.ok) {
+      return { message: '¡Gracias! Tu cita ha sido registrada.', status: 'success' };
+    } else {
+      return { message: 'Hubo un error al registrar tu cita. Inténtalo de nuevo.', status: 'error' };
     }
-    
-    return { success: true, message: "Solicitud enviada con éxito." };
   } catch (error) {
-    console.error("Error posting to webhook:", error);
-    return { success: false, message: "Error de conexión. Por favor, verifique su conexión a internet." };
+    console.error('Error submitting appointment form:', error);
+    return { message: 'Hubo un error al registrar tu cita. Inténtalo de nuevo.', status: 'error' };
   }
 }
 
-export async function solicitarCita(
-  data: z.infer<typeof citaSchema>
-): Promise<FormState> {
-  const parsedData = citaSchema.safeParse(data);
-  if (!parsedData.success) {
-    return { success: false, message: "Datos del formulario inválidos." };
-  }
-  return postToWebhook(n8nWebhookUrls.nuevaCita, parsedData.data);
-}
+export async function handleVolunteerSubmission(prevState: any, data: any) { // Changed to accept data object
 
-export async function registrarVoluntario(
-  data: z.infer<typeof voluntarioSchema>
-): Promise<FormState> {
-  const parsedData = voluntarioSchema.safeParse(data);
-  if (!parsedData.success) {
-    return { success: false, message: "Datos del formulario inválidos." };
-  }
-  return postToWebhook(n8nWebhookUrls.nuevoVoluntario, parsedData.data);
-}
-
-export async function registrarDonacion(
-  data: z.infer<typeof donacionSchema>
-): Promise<FormState> {
-  const parsedData = donacionSchema.safeParse(data);
-  if (!parsedData.success) {
-    return { success: false, message: "Datos del formulario inválidos." };
-  }
-  return postToWebhook(n8nWebhookUrls.nuevaDonacion, parsedData.data);
-}
-
-
-export async function detectAppointmentUrgency(issueDescription: string) {
-  "use server";
-  if (!issueDescription || issueDescription.trim().length < 10) {
-    return null;
-  }
   try {
-    const urgency = await detectAppointmentUrgencyFlow({ issueDescription });
-    return urgency;
+    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/voluntarios', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Sending the data object directly
+    });
+
+    if (response.ok) {
+      return { message: '¡Gracias por tu interés! Hemos recibido tu información.', status: 'success' };
+    } else {
+      return { message: 'Hubo un error al enviar tu información. Inténtalo de nuevo.', status: 'error' };
+    }
   } catch (error) {
-    console.error("Error detecting urgency:", error);
-    return null;
+    console.error('Error submitting volunteer form:', error);
+    return { message: 'Hubo un error al enviar tu información. Inténtalo de nuevo.', status: 'error' };
+  }
+}
+
+export async function handleDonationSubmission(prevState: any, data: any) { // Changed to accept data object
+
+  try {
+    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/donaciones', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Sending the data object directly including email
+    });
+
+    if (response.ok) {
+      return { message: '¡Gracias por tu donación!', status: 'success' };
+    } else {
+      return { message: 'Hubo un error al procesar tu donación. Inténtalo de nuevo.', status: 'error' };
+    }
+  } catch (error) {
+    console.error('Error submitting donation form:', error);
+    return { message: 'Hubo un error al procesar tu donación. Inténtalo de nuevo.', status: 'error' };
   }
 }

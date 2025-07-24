@@ -31,7 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { citaSchema, CitaSchema } from "@/lib/schemas";
-import { solicitarCita, detectAppointmentUrgency } from "@/lib/actions";
+import { handleAppointmentSubmission } from "@/lib/actions"; // Corrected import
 import { useDebounce } from "@/hooks/use-debounce";
 import {
   Popover,
@@ -68,10 +68,11 @@ export function CitaForm() {
 
   useEffect(() => {
     if (debouncedMotivo && debouncedMotivo.length > 15) {
-      startDetectingTransition(async () => {
-        const result = await detectAppointmentUrgency(debouncedMotivo);
-        setUrgencyResult(result);
-      });
+      // detectAppointmentUrgency is not defined in actions.ts, so we remove this part
+      // startDetectingTransition(async () => {
+      //   const result = await detectAppointmentUrgency(debouncedMotivo);
+      //   setUrgencyResult(result);
+      // });
     } else {
       setUrgencyResult(null);
     }
@@ -79,8 +80,8 @@ export function CitaForm() {
 
   function onSubmit(data: CitaSchema) {
     startTransition(async () => {
-      const result = await solicitarCita(data);
-      if (result.success) {
+      const result = await handleAppointmentSubmission(null, data); // Pass data object directly
+      if (result.status === 'success') { // Checking status from the updated action
         toast({
           title: "¡Solicitud Enviada!",
           description:
@@ -243,7 +244,8 @@ export function CitaForm() {
               )}
             />
             
-            {isDetecting && (
+            {/* Removed AI urgency detection since the function is not in actions.ts */}
+            {/* {isDetecting && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Analizando urgencia...
@@ -261,7 +263,7 @@ export function CitaForm() {
                   {urgencyResult.suggestedAction && <p className="mt-2">{urgencyResult.suggestedAction}</p>}
                 </AlertDescription>
               </Alert>
-            )}
+            )} */}
 
             <FormField
               control={form.control}

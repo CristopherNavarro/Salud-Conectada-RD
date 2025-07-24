@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { donacionSchema, DonacionSchema } from "@/lib/schemas";
-import { registrarDonacion } from "@/lib/actions";
+import { handleDonationSubmission } from "@/lib/actions";
 
 export function DonacionForm() {
   const { toast } = useToast();
@@ -31,14 +31,15 @@ export function DonacionForm() {
     defaultValues: {
       nombreDonante: "",
       telefonoContacto: "",
+      email: "", // Added email to default values
       descripcionInsumo: "",
     },
   });
 
   function onSubmit(data: DonacionSchema) {
     startTransition(async () => {
-      const result = await registrarDonacion(data);
-      if (result.success) {
+      const result = await handleDonationSubmission(null, data); // Pass data object directly
+      if (result.status === 'success') {
         toast({
           title: "¡Gracias por tu generosidad!",
           description: "Tu generosidad hace la diferencia. Gracias por tu donación, te contactaremos para coordinar la entrega.",
@@ -83,6 +84,19 @@ export function DonacionForm() {
                   <FormLabel>Número de Teléfono de Contacto</FormLabel>
                   <FormControl>
                     <Input type="tel" placeholder="Ej. 809-123-4567" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Correo Electrónico</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="ejemplo@correo.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
