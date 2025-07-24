@@ -10,9 +10,9 @@ type FormState = {
 };
 
 const n8nWebhookUrls = {
-    nuevaCita: "https://n8n.example.com/webhook/nueva-cita",
-    nuevoVoluntario: "https://n8n.example.com/webhook/nuevo-voluntario",
-    nuevaDonacion: "https://n8n.example.com/webhook/nueva-donacion",
+    nuevaCita: "https://kirki.app.n8n.cloud/webhook-test/pacientes",
+    nuevoVoluntario: "https://kirki.app.n8n.cloud/webhook-test/voluntarios",
+    nuevaDonacion: "https://kirki.app.n8n.cloud/webhook-test/donaciones",
 };
 
 async function postToWebhook(url: string, data: unknown): Promise<FormState> {
