@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -31,27 +31,32 @@ import { useToast } from "@/hooks/use-toast";
 import { citaSchema, CitaSchema } from "@/lib/schemas";
 import { handleAppointmentSubmission } from "@/lib/actions";
 
-// ELIMINADO: Ya no se usan los imports para la IA ni el calendario de nacimiento
-// import { CalendarIcon, AlertCircle, Sparkles } from "lucide-react";
-// import { format } from "date-fns";
-// import { es } from "date-fns/locale";
-// import { useDebounce } from "@/hooks/use-debounce";
-// import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-// import { Calendar } from "@/components/ui/calendar";
-// import { cn } from "@/lib/utils";
-// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-// import type { DetectAppointmentUrgencyOutput } from "@/ai/flows/detect-appointment-urgency";
+// MODIFICADO: Nueva función para generar franjas horarias en formato 12-horas (AM/PM)
+const generateTimeSlots12Hour = () => {
+  const slots = [];
+  for (let hour = 0; hour < 24; hour++) {
+    for (const minute of [0, 30]) {
+      const isPM = hour >= 12;
+      const displayHour = hour % 12 === 0 ? 12 : hour % 12; // Convierte 0 y 12 a 12
+      const formattedHour = String(displayHour).padStart(2, '0');
+      const formattedMinute = String(minute).padStart(2, '0');
+      const ampm = isPM ? 'PM' : 'AM';
+      slots.push(`${formattedHour}:${formattedMinute} ${ampm}`);
+    }
+  }
+  return slots;
+};
+
+// AÑADIDO: Generamos la nueva lista de horas una vez
+const timeSlots = generateTimeSlots12Hour();
+
 
 export function CitaForm() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  // ELIMINADO: Estados relacionados con la IA
-  // const [isDetecting, startDetectingTransition] = useTransition();
-  // const [urgencyResult, setUrgencyResult] = useState<DetectAppointmentUrgencyOutput | null>(null);
 
   const form = useForm<CitaSchema>({
     resolver: zodResolver(citaSchema),
-    // MODIFICADO: Valores por defecto actualizados
     defaultValues: {
       nombreCompleto: "",
       cedula: "",
@@ -66,11 +71,6 @@ export function CitaForm() {
     },
   });
 
-  // ELIMINADO: Lógica y useEffect para detectar urgencia con IA
-  // const motivoCita = form.watch("motivoCita");
-  // const debouncedMotivo = useDebounce(motivoCita, 1000);
-  // useEffect(() => { ... });
-
   function onSubmit(data: CitaSchema) {
     startTransition(async () => {
       const result = await handleAppointmentSubmission(null, data);
@@ -80,8 +80,6 @@ export function CitaForm() {
           description: "Hemos recibido tu solicitud. Recibirás una confirmación por WhatsApp y correo electrónico pronto.",
         });
         form.reset();
-        // ELIMINADO: Limpieza del estado de la IA
-        // setUrgencyResult(null);
       } else {
         toast({
           variant: "destructive",
@@ -100,6 +98,7 @@ export function CitaForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* --- El resto de los campos no cambian --- */}
             <FormField
               control={form.control}
               name="nombreCompleto"
@@ -126,7 +125,6 @@ export function CitaForm() {
                 </FormItem>
               )}
             />
-            {/* MODIFICADO: Campo de Fecha de Nacimiento cambiado por Edad */}
             <FormField
               control={form.control}
               name="edad"
@@ -199,7 +197,6 @@ export function CitaForm() {
                 </FormItem>
               )}
             />
-            {/* AÑADIDO: Nuevos campos para Fecha y Hora de la cita */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -214,6 +211,7 @@ export function CitaForm() {
                   </FormItem>
                 )}
               />
+              {/* MODIFICADO: Campo de Hora de la Cita con la lista en formato 12h AM/PM */}
               <FormField
                 control={form.control}
                 name="horaCita"
@@ -227,13 +225,11 @@ export function CitaForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="08:00 AM">08:00 AM</SelectItem>
-                        <SelectItem value="09:00 AM">09:00 AM</SelectItem>
-                        <SelectItem value="10:00 AM">10:00 AM</SelectItem>
-                        <SelectItem value="11:00 AM">11:00 AM</SelectItem>
-                        <SelectItem value="02:00 PM">02:00 PM</SelectItem>
-                        <SelectItem value="03:00 PM">03:00 PM</SelectItem>
-                        <SelectItem value="04:00 PM">04:00 PM</SelectItem>
+                        {timeSlots.map(time => (
+                          <SelectItem key={time} value={time}>
+                            {time}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -258,9 +254,6 @@ export function CitaForm() {
                 </FormItem>
               )}
             />
-            
-            {/* ELIMINADO: Sección completa de análisis de urgencia por IA */}
-
             <FormField
               control={form.control}
               name="necesitaAcompanante"
