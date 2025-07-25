@@ -1,6 +1,6 @@
 export async function handleAppointmentSubmission(prevState: any, data: any) { // Changed to accept data object
   try {
-    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/pacientes', {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/pacientes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export async function handleAppointmentSubmission(prevState: any, data: any) { /
 export async function handleVolunteerSubmission(prevState: any, data: any) { // Changed to accept data object
 
   try {
-    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/voluntarios', {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/voluntarios', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export async function handleVolunteerSubmission(prevState: any, data: any) { // 
 export async function handleDonationSubmission(prevState: any, data: any) { // Changed to accept data object
 
   try {
-    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/donaciones', {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/donaciones', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
