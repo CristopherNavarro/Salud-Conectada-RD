@@ -1,6 +1,6 @@
 export async function handleAppointmentSubmission(prevState: any, data: any) { // Changed to accept data object
   try {
-    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/pacientes', {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/pacientes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export async function handleAppointmentSubmission(prevState: any, data: any) { /
 export async function handleVolunteerSubmission(prevState: any, data: any) { // Changed to accept data object
 
   try {
-    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/voluntarios', {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/voluntarios', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export async function handleVolunteerSubmission(prevState: any, data: any) { // 
 export async function handleDonationSubmission(prevState: any, data: any) { // Changed to accept data object
 
   try {
-    const response = await fetch('https://kirki.app.n8n.cloud/webhook-test/donaciones', {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/donaciones', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,5 +60,40 @@ export async function handleDonationSubmission(prevState: any, data: any) { // C
   } catch (error) {
     console.error('Error submitting donation form:', error);
     return { message: 'Hubo un error al procesar tu donación. Inténtalo de nuevo.', status: 'error' };
+  }
+}
+
+// AÑADIDO: Nueva función para manejar el envío de mensajes del chatbot
+export async function handleChatSubmission(message: string): Promise<string> {
+  try {
+    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Asegúrate de que el cuerpo del mensaje coincida con lo que espera tu webhook de N8N.
+      // Aquí asumimos que espera un objeto con una propiedad "message".
+      body: JSON.stringify({ message }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error del servidor: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    
+    // Asumimos que la respuesta de N8N es un JSON con una propiedad "reply" que contiene el texto del bot.
+    // Ajusta "reply" al nombre de la propiedad correcta que devuelve tu flujo de trabajo.
+    if (result && result.reply) {
+      return result.reply;
+    } else {
+      // Si la respuesta no tiene el formato esperado, devuelve un mensaje genérico.
+      return "He recibido tu mensaje, pero no pude procesar una respuesta.";
+    }
+
+  } catch (error) {
+    console.error('Error submitting chat message:', error);
+    // Devuelve un mensaje de error genérico para mostrar en la interfaz de chat.
+    return "No se pudo conectar con el asistente. Por favor, inténtalo más tarde.";
   }
 }

@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-// AÑADIDO: Importamos nuestro nuevo componente de Chat
-import WebChat from "@/components/WebChat";
+// AÑADIDO: Importamos nuestro nuevo componente de Chatbot
+import Chatbot from "@/components/Chatbot";
 
 const ptSans = PT_Sans({
   subsets: ["latin"],
@@ -35,8 +35,8 @@ export default function RootLayout({
         </div>
         <Toaster />
         
-        {/* MODIFICADO: Usamos el componente en lugar del Script directo */}
-        <WebChat />
+        {/* MODIFICADO: Reemplazamos WebChat por el nuevo componente Chatbot */}
+        <Chatbot />
       </body>
     </html>
   );
