@@ -14,7 +14,7 @@ interface Message {
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { text: "¡Hola! Soy SCRD, tu asistente virtual. ¿Cómo puedo ayudarte hoy?", sender: 'bot' }
+    { text: "¡Hola! Soy VIA (Virtual Intelligent Assistant). ¿Cómo puedo ayudarte hoy?", sender: 'bot' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -96,8 +96,8 @@ const Chatbot: React.FC = () => {
               <BotIcon />
             </div>
             <div>
-              <h3 className="font-bold text-lg">SCRD</h3>
-              <p className="text-xs opacity-80">Asistente Virtual</p>
+              <h3 className="font-bold text-lg">VIA</h3>
+              <p className="text-xs opacity-80">Virtual Intelligent Assistant</p>
             </div>
           </div>
           <button onClick={toggleChat} className="p-2 rounded-full hover:bg-white/20" aria-label="Cerrar chat">

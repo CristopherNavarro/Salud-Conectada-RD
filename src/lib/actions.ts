@@ -2,13 +2,12 @@
 
 // --- NOTA DE PRODUCCIÓN ---
 // Reemplaza las siguientes URLs de placeholder con tus URLs de producción reales de n8n.
-const N8N_URL_BASE = "https://TU_URL_DE_PRODUCCION.n8n.cloud"; // O tu dominio
+const N8N_URL_BASE = "https://monkey-adapting-cub.ngrok-free.app"; // O tu dominio
 
 const WEBHOOK_URLS = {
   citas: `${N8N_URL_BASE}/webhook/pacientes`,
   voluntarios: `${N8N_URL_BASE}/webhook/voluntarios`,
   donaciones: `${N8N_URL_BASE}/webhook/donaciones`,
-  chat: `${N8N_URL_BASE}/webhook/chat`,
 };
 
 // --- Funciones de Formulario ---
