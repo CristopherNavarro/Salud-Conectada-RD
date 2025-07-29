@@ -1,11 +1,15 @@
-export async function handleAppointmentSubmission(prevState: any, data: any) { // Changed to accept data object
+export async function handleAppointmentSubmission(prevState: any, data: any) {
   try {
+    // Formatear el número de teléfono
+    const formattedPhone = `1${data.telefono.replace(/\D/g, '')}`;
+    const dataToSend = { ...data, telefono: formattedPhone };
+
     const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/pacientes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), // Sending the data object directly
+      body: JSON.stringify(dataToSend), // Enviamos el objeto con el teléfono formateado
     });
 
     if (response.ok) {
@@ -19,15 +23,18 @@ export async function handleAppointmentSubmission(prevState: any, data: any) { /
   }
 }
 
-export async function handleVolunteerSubmission(prevState: any, data: any) { // Changed to accept data object
-
+export async function handleVolunteerSubmission(prevState: any, data: any) {
   try {
+    // Formatear el número de teléfono
+    const formattedPhone = `1${data.telefono.replace(/\D/g, '')}`;
+    const dataToSend = { ...data, telefono: formattedPhone };
+
     const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/voluntarios', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), // Sending the data object directly
+      body: JSON.stringify(dataToSend), // Enviamos el objeto con el teléfono formateado
     });
 
     if (response.ok) {
@@ -41,15 +48,18 @@ export async function handleVolunteerSubmission(prevState: any, data: any) { // 
   }
 }
 
-export async function handleDonationSubmission(prevState: any, data: any) { // Changed to accept data object
-
+export async function handleDonationSubmission(prevState: any, data: any) {
   try {
+    // Formatear el número de teléfono de contacto
+    const formattedPhone = `1${data.telefonoContacto.replace(/\D/g, '')}`;
+    const dataToSend = { ...data, telefonoContacto: formattedPhone };
+
     const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/donaciones', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), // Sending the data object directly including email
+      body: JSON.stringify(dataToSend), // Enviamos el objeto con el teléfono formateado
     });
 
     if (response.ok) {
@@ -63,37 +73,34 @@ export async function handleDonationSubmission(prevState: any, data: any) { // C
   }
 }
 
-// AÑADIDO: Nueva función para manejar el envío de mensajes del chatbot
-export async function handleChatSubmission(message: string): Promise<string> {
+// === FUNCIÓN AÑADIDA PARA CORREGIR EL ERROR ===
+export async function handleChatSubmission(prevState: any, data: any) {
   try {
+    // Creamos un objeto para enviar, asumiendo que puede tener un teléfono
+    let dataToSend = { ...data };
+
+    // Si el chatbot recoge un número de teléfono, también lo formateamos
+    if (data.telefono) {
+        const formattedPhone = `1${data.telefono.replace(/\D/g, '')}`;
+        dataToSend = { ...dataToSend, telefono: formattedPhone };
+    }
+
+    // He asumido una URL de webhook para el chat. ¡Asegúrate de que sea la correcta!
     const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      // Asegúrate de que el cuerpo del mensaje coincida con lo que espera tu webhook de N8N.
-      // Aquí asumimos que espera un objeto con una propiedad "message".
-      body: JSON.stringify({ message }),
+      body: JSON.stringify(dataToSend),
     });
 
-    if (!response.ok) {
-      throw new Error(`Error del servidor: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    
-    // Asumimos que la respuesta de N8N es un JSON con una propiedad "reply" que contiene el texto del bot.
-    // Ajusta "reply" al nombre de la propiedad correcta que devuelve tu flujo de trabajo.
-    if (result && result.reply) {
-      return result.reply;
+    if (response.ok) {
+      return { message: 'Mensaje enviado.', status: 'success' };
     } else {
-      // Si la respuesta no tiene el formato esperado, devuelve un mensaje genérico.
-      return "He recibido tu mensaje, pero no pude procesar una respuesta.";
+      return { message: 'Error al enviar el mensaje.', status: 'error' };
     }
-
   } catch (error) {
-    console.error('Error submitting chat message:', error);
-    // Devuelve un mensaje de error genérico para mostrar en la interfaz de chat.
-    return "No se pudo conectar con el asistente. Por favor, inténtalo más tarde.";
+    console.error('Error submitting chat form:', error);
+    return { message: 'Error al enviar el mensaje.', status: 'error' };
   }
 }
