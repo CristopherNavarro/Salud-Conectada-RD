@@ -14,7 +14,7 @@ interface Message {
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { text: "¡Hola! Soy VIA (Virtual Intelligent Assistant). ¿Cómo puedo ayudarte hoy?", sender: 'bot' }
+    { text: "¡Hola! Soy VIA. ¿Cómo puedo ayudarte hoy?", sender: 'bot' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
