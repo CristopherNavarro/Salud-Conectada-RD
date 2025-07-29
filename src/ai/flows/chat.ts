@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A chatbot flow using Genkit and Mistral.
+ * @fileOverview A chatbot flow using Genkit and Gemini.
  *
  * - chat - A function that handles the chat conversation.
  * - ChatInput - The input type for the chat function.
@@ -32,10 +32,4 @@ const chatFlow = ai.defineFlow(
   },
   async input => {
     const llmResponse = await ai.generate({
-      model: 'mistral/open-mistral-7b',
-      prompt: input.message,
-    });
-
-    return {response: llmResponse.text};
-  }
-);
+      model: 'googleai/gem
