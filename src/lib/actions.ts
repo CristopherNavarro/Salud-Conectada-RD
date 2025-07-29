@@ -1,5 +1,7 @@
 "use server";
 
+import { chat } from "@/ai/flows/chat";
+
 // --- NOTA DE PRODUCCIÓN ---
 // Reemplaza las siguientes URLs de placeholder con tus URLs de producción reales de n8n.
 const N8N_URL_BASE = "https://monkey-adapting-cub.ngrok-free.app"; // O tu dominio
@@ -73,28 +75,14 @@ export async function handleDonationSubmission(prevState: any, data: any) {
 }
 
 
-// --- Función del Chatbot (Versión de Producción) ---
+// --- Función del Chatbot (Versión con Genkit) ---
 
 export async function handleChatSubmission(userMessage: string): Promise<string> {
   try {
-    const response = await fetch(WEBHOOK_URLS.chat, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: userMessage }),
-    });
-
-    if (!response.ok) {
-      console.error("Error en la respuesta del webhook:", response.status, response.statusText);
-      return "Lo siento, no pude conectarme con mi cerebro. Intenta de nuevo.";
-    }
-
-    const data = await response.json();
-    return data.response || "No he recibido una respuesta válida. Inténtalo de nuevo.";
-
+    const response = await chat({ message: userMessage });
+    return response.response;
   } catch (error) {
-    console.error('Error al contactar el webhook del chat:', error);
+    console.error('Error al contactar el flow de chat:', error);
     return "Tuve un problema técnico. Por favor, intenta más tarde.";
   }
 }
