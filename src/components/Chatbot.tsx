@@ -42,14 +42,16 @@ const Chatbot: React.FC = () => {
 
     const userMessage: Message = { text: inputValue, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue('');
     setIsLoading(true);
 
     try {
-      const botResponseText = await handleChatSubmission(inputValue);
+      const botResponseText = await handleChatSubmission(currentInput);
       const botMessage: Message = { text: botResponseText, sender: 'bot' };
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
+      console.error("Error en el envío del chat:", error);
       const errorMessage: Message = { text: "Lo siento, algo salió mal. Por favor, intenta de nuevo.", sender: 'bot' };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
@@ -57,7 +59,6 @@ const Chatbot: React.FC = () => {
     }
   };
   
-  // Icono personalizado para el bot
   const BotIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -70,10 +71,8 @@ const Chatbot: React.FC = () => {
     </svg>
   );
 
-
   return (
     <>
-      {/* Botón flotante para abrir/cerrar el chat */}
       <button
         onClick={toggleChat}
         className={cn(
@@ -85,14 +84,12 @@ const Chatbot: React.FC = () => {
         {isOpen ? <X size={32} /> : <MessageSquare size={32} />}
       </button>
 
-      {/* Contenedor de la ventana de chat */}
       <div
         className={cn(
           "fixed bottom-24 right-5 z-50 w-[calc(100%-40px)] max-w-sm h-[70vh] max-h-[600px] bg-white dark:bg-gray-900 rounded-2xl shadow-xl flex flex-col transition-all duration-300 ease-in-out",
           isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
         )}
       >
-        {/* Encabezado del Chat */}
         <div className="p-4 rounded-t-2xl text-white bg-gradient-to-br from-purple-600 to-blue-500 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -108,7 +105,6 @@ const Chatbot: React.FC = () => {
           </button>
         </div>
 
-        {/* Área de Mensajes */}
         <div className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <div className="flex flex-col gap-4">
             {messages.map((msg, index) => (
@@ -138,7 +134,7 @@ const Chatbot: React.FC = () => {
             ))}
             {isLoading && (
               <div className="flex items-start gap-3 self-start">
-                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center shrink-0">
                     <BotIcon />
                   </div>
                 <div className="p-3 rounded-2xl bg-gray-200 dark:bg-gray-700 flex items-center gap-2">
@@ -152,7 +148,6 @@ const Chatbot: React.FC = () => {
           </div>
         </div>
 
-        {/* Input de Mensaje */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-b-2xl">
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <input

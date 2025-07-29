@@ -1,17 +1,27 @@
+"use server";
+
+// --- NOTA DE PRODUCCIÓN ---
+// Reemplaza las siguientes URLs de placeholder con tus URLs de producción reales de n8n.
+const N8N_URL_BASE = "https://TU_URL_DE_PRODUCCION.n8n.cloud"; // O tu dominio
+
+const WEBHOOK_URLS = {
+  citas: `${N8N_URL_BASE}/webhook/pacientes`,
+  voluntarios: `${N8N_URL_BASE}/webhook/voluntarios`,
+  donaciones: `${N8N_URL_BASE}/webhook/donaciones`,
+  chat: `${N8N_URL_BASE}/webhook/chat`,
+};
+
+// --- Funciones de Formulario ---
+
 export async function handleAppointmentSubmission(prevState: any, data: any) {
   try {
-    // Formatear el número de teléfono
     const formattedPhone = `1${data.telefono.replace(/\D/g, '')}`;
     const dataToSend = { ...data, telefono: formattedPhone };
-
-    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/pacientes', {
+    const response = await fetch(WEBHOOK_URLS.citas, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataToSend), // Enviamos el objeto con el teléfono formateado
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dataToSend),
     });
-
     if (response.ok) {
       return { message: '¡Gracias! Tu cita ha sido registrada.', status: 'success' };
     } else {
@@ -25,18 +35,13 @@ export async function handleAppointmentSubmission(prevState: any, data: any) {
 
 export async function handleVolunteerSubmission(prevState: any, data: any) {
   try {
-    // Formatear el número de teléfono
     const formattedPhone = `1${data.telefono.replace(/\D/g, '')}`;
     const dataToSend = { ...data, telefono: formattedPhone };
-
-    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/voluntarios', {
+    const response = await fetch(WEBHOOK_URLS.voluntarios, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataToSend), // Enviamos el objeto con el teléfono formateado
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dataToSend),
     });
-
     if (response.ok) {
       return { message: '¡Gracias por tu interés! Hemos recibido tu información.', status: 'success' };
     } else {
@@ -50,18 +55,13 @@ export async function handleVolunteerSubmission(prevState: any, data: any) {
 
 export async function handleDonationSubmission(prevState: any, data: any) {
   try {
-    // Formatear el número de teléfono de contacto
     const formattedPhone = `1${data.telefonoContacto.replace(/\D/g, '')}`;
     const dataToSend = { ...data, telefonoContacto: formattedPhone };
-
-    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/donaciones', {
+    const response = await fetch(WEBHOOK_URLS.donaciones, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataToSend), // Enviamos el objeto con el teléfono formateado
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dataToSend),
     });
-
     if (response.ok) {
       return { message: '¡Gracias por tu donación!', status: 'success' };
     } else {
@@ -73,34 +73,29 @@ export async function handleDonationSubmission(prevState: any, data: any) {
   }
 }
 
-// === FUNCIÓN AÑADIDA PARA CORREGIR EL ERROR ===
-export async function handleChatSubmission(prevState: any, data: any) {
+
+// --- Función del Chatbot (Versión de Producción) ---
+
+export async function handleChatSubmission(userMessage: string): Promise<string> {
   try {
-    // Creamos un objeto para enviar, asumiendo que puede tener un teléfono
-    let dataToSend = { ...data };
-
-    // Si el chatbot recoge un número de teléfono, también lo formateamos
-    if (data.telefono) {
-        const formattedPhone = `1${data.telefono.replace(/\D/g, '')}`;
-        dataToSend = { ...dataToSend, telefono: formattedPhone };
-    }
-
-    // He asumido una URL de webhook para el chat. ¡Asegúrate de que sea la correcta!
-    const response = await fetch('https://monkey-adapting-cub.ngrok-free.app/webhook/chat', {
+    const response = await fetch(WEBHOOK_URLS.chat, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataToSend),
+      body: JSON.stringify({ message: userMessage }),
     });
 
-    if (response.ok) {
-      return { message: 'Mensaje enviado.', status: 'success' };
-    } else {
-      return { message: 'Error al enviar el mensaje.', status: 'error' };
+    if (!response.ok) {
+      console.error("Error en la respuesta del webhook:", response.status, response.statusText);
+      return "Lo siento, no pude conectarme con mi cerebro. Intenta de nuevo.";
     }
+
+    const data = await response.json();
+    return data.response || "No he recibido una respuesta válida. Inténtalo de nuevo.";
+
   } catch (error) {
-    console.error('Error submitting chat form:', error);
-    return { message: 'Error al enviar el mensaje.', status: 'error' };
+    console.error('Error al contactar el webhook del chat:', error);
+    return "Tuve un problema técnico. Por favor, intenta más tarde.";
   }
 }
