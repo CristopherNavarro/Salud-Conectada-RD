@@ -32,4 +32,12 @@ const chatFlow = ai.defineFlow(
   },
   async input => {
     const llmResponse = await ai.generate({
-      model: 'googleai/gem
+      model: 'googleai/gemini-1.5-flash-latest',
+      prompt: input.message,
+    });
+
+    return {
+      response: llmResponse.text,
+    };
+  }
+);
