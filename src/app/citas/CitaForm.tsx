@@ -4,7 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useTransition } from "react";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +32,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { citaSchema, CitaSchema } from "@/lib/schemas";
 import { handleAppointmentSubmission } from "@/lib/actions";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 // MODIFICADO: Nueva función para generar franjas horarias en formato 12-horas (AM/PM)
 const generateTimeSlots12Hour = () => {
@@ -198,19 +203,47 @@ export function CitaForm() {
               )}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="fechaCita"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fecha de la Cita</FormLabel>
-                    <FormControl>
-                      <Input placeholder="DD/MM/AAAA" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="fechaCita"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Fecha de la Cita</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(new Date(field.value), "PPP", { locale: es })
+                          ) : (
+                            <span>Seleccione una fecha</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ? new Date(field.value) : undefined}
+                        onSelect={(date) => field.onChange(date?.toISOString())}
+                        disabled={(date) =>
+                          date < new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
               {/* MODIFICADO: Campo de Hora de la Cita con la lista en formato 12h AM/PM */}
               <FormField
                 control={form.control}
