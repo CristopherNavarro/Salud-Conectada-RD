@@ -32,7 +32,7 @@ const chatFlow = ai.defineFlow(
   },
   async input => {
     const llmResponse = await ai.generate({
-      model: 'mistral/mistral-large-latest',
+      model: 'mistral/open-mistral-7b',
       prompt: input.message,
     });
 
