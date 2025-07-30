@@ -200,15 +200,15 @@ export function CitaForm() {
               )}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="fechaCita"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Fecha de la Cita</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
+              <FormField
+                control={form.control}
+                name="fechaCita"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fecha de la Cita</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
                         <Button
                           variant={"outline"}
                           className={cn(
@@ -217,7 +217,7 @@ export function CitaForm() {
                           )}
                         >
                           {field.value ? (
-                            format(new Date(field.value), "PPP", { locale: es })
+                            format(new Date(field.value.split('/').reverse().join('-')), "PPP", { locale: es })
                           ) : (
                             <span>Seleccione una fecha</span>
                           )}
@@ -228,8 +228,8 @@ export function CitaForm() {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value ? new Date(field.value) : undefined}
-                        onSelect={(date) => field.onChange(date?.toISOString())}
+                        selected={field.value ? new Date(field.value.split('/').reverse().join('-')) : undefined}
+                        onSelect={(date) => field.onChange(date ? format(date, 'dd/MM/yyyy') : '')}
                         disabled={(date) =>
                           date < new Date() || date < new Date("1900-01-01")
                         }
