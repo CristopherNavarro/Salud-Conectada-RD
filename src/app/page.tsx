@@ -6,7 +6,7 @@ import { HandHelping, Stethoscope, HeartHandshake, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ImageCarousel from "@/components/ImageCarousel";
-import { toast } from "@/hooks/use-toast"; // Corrected import path
+import { toast } from "@/hooks/use-toast";
 
 export default function Home() {
   const handleCopyEmail = () => {
@@ -45,7 +45,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sección Sobre Nosotros */}
       <section id="sobre-nosotros" className="w-full py-12 md:py-24 lg:py-32" style={{ backgroundColor: '#f7f9fc' }}>
         <div className="container px-4 md:px-6">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
@@ -70,7 +69,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sección Cómo Funciona */}
       <section id="como-funciona" className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -89,7 +87,6 @@ export default function Home() {
             </div>
           </div>
           <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16 mt-12">
-            {/* Card 1 */}
             <Card className="text-center transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 rounded-xl border-none">
               <CardHeader>
                 <div className="mx-auto bg-primary rounded-full p-4 w-fit">
@@ -104,7 +101,6 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-            {/* Card 2 */}
             <Card className="text-center transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 rounded-xl border-none">
               <CardHeader>
                 <div className="mx-auto bg-primary rounded-full p-4 w-fit">
@@ -119,7 +115,6 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-            {/* Card 3 */}
             <Card className="text-center transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 rounded-xl border-none">
               <CardHeader>
                 <div className="mx-auto bg-primary rounded-full p-4 w-fit">
@@ -138,7 +133,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sección Contáctanos */}
       <section id="contactanos" className="w-full py-12 md:py-24 lg:py-32 text-white text-center" style={{ backgroundColor: '#007bff' }}>
         <div className="container px-4 md:px-6 flex flex-col items-center">
           <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-6xl font-headline mb-4">
@@ -156,8 +150,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer - Assuming Footer is a separate component rendered here */}
-      {/* <Footer /> */}
     </div>
   );
 }

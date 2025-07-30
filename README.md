@@ -69,4 +69,4 @@ Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina loc
 
 ## 📄 Licencia
 
-Distribuido bajo la Licencia MIT. Ver `LICENSE.txt` para más información.
+Distribuido bajo la Licencia MIT.

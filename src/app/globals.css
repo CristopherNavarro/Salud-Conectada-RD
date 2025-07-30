@@ -70,9 +70,6 @@
 }
 
 @media (max-width: 768px) {
-  /* CORRECCIÓN DEFINITIVA DEL HEADER */
-  
-  /* Estructura correcta: hamburguesa izquierda, logo derecha, todo en una línea */
   header .container {
     display: flex !important;
     justify-content: space-between !important;
@@ -81,13 +78,11 @@
     height: 64px !important;
   }
 
-  /* Mostrar el logo principal en móvil (estaba oculto) y moverlo a la derecha */
   header .container > div:first-child {
     display: flex !important;
     order: 2 !important;
   }
 
-  /* Logo en una sola línea horizontal */
   header .container > div:first-child a {
     display: flex !important;
     flex-direction: row !important;
@@ -96,14 +91,12 @@
     white-space: nowrap !important;
   }
 
-  /* Contenedor de la hamburguesa a la izquierda */
   header .container > div:nth-child(2) {
     display: flex !important;
     order: 1 !important;
     align-items: center !important;
   }
 
-  /* Botón hamburguesa */
   header .container button {
     display: flex !important;
     align-items: center !important;
@@ -111,15 +104,11 @@
   }
 
 
-  /* CORRECCIÓN DEFINITIVA DEL HERO - IMAGEN DE FONDO COMPLETA */
-
-  /* Contenedor principal del hero */
   section.relative.w-full.h-screen.overflow-hidden {
     height: 100vh !important;
     position: relative !important;
   }
 
-  /* Carousel debe ocupar toda la pantalla */
   section.relative.w-full.h-screen.overflow-hidden .carousel {
     height: 100vh !important;
     width: 100% !important;
@@ -128,7 +117,6 @@
     left: 0 !important;
   }
 
-  /* Eliminar restricciones del carousel en móvil */
   section.relative.w-full.h-screen.overflow-hidden .carousel.carousel-root {
     height: 100vh !important;
     width: 100% !important;
@@ -136,24 +124,20 @@
     aspect-ratio: unset !important;
   }
 
-  /* Contenedor de slides debe ocupar toda la altura */
   section.relative.w-full.h-screen.overflow-hidden .carousel .carousel-slider {
     height: 100vh !important;
   }
 
-  /* Cada slide debe ocupar toda la pantalla */
   section.relative.w-full.h-screen.overflow-hidden .carousel .slide {
     height: 100vh !important;
   }
 
-  /* Las imágenes deben cubrir toda la pantalla */
   section.relative.w-full.h-screen.overflow-hidden .carousel .slide img {
     height: 100vh !important;
     width: 100% !important;
     object-fit: cover !important;
   }
 
-  /* Contenido superpuesto centrado */
   section.relative.w-full.h-screen.overflow-hidden > div.absolute.inset-0 {
     position: absolute !important;
     top: 0 !important;
@@ -170,14 +154,10 @@
     z-index: 10 !important;
   }
 
-  /* "Sobre Nosotros" Image Fixes */
-  /* Target the div containing the image within the section with id 'sobre-nosotros' */
   #sobre-nosotros .relative.w-full {
     height: 250px !important;
-    /* Adjust height for mobile */
   }
 
-  /* Ensure image within the container fills the space */
   #sobre-nosotros .relative.w-full img {
     object-fit: cover !important;
     width: 100% !important;

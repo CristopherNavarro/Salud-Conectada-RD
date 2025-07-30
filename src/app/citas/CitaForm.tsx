@@ -36,13 +36,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 
-// MODIFICADO: Nueva función para generar franjas horarias en formato 12-horas (AM/PM)
 const generateTimeSlots12Hour = () => {
   const slots = [];
   for (let hour = 0; hour < 24; hour++) {
     for (const minute of [0, 30]) {
       const isPM = hour >= 12;
-      const displayHour = hour % 12 === 0 ? 12 : hour % 12; // Convierte 0 y 12 a 12
+      const displayHour = hour % 12 === 0 ? 12 : hour % 12;
       const formattedHour = String(displayHour).padStart(2, '0');
       const formattedMinute = String(minute).padStart(2, '0');
       const ampm = isPM ? 'PM' : 'AM';
@@ -52,7 +51,6 @@ const generateTimeSlots12Hour = () => {
   return slots;
 };
 
-// AÑADIDO: Generamos la nueva lista de horas una vez
 const timeSlots = generateTimeSlots12Hour();
 
 
@@ -103,7 +101,6 @@ export function CitaForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* --- El resto de los campos no cambian --- */}
             <FormField
               control={form.control}
               name="nombreCompleto"
@@ -244,7 +241,6 @@ export function CitaForm() {
                 </FormItem>
               )}
             />
-              {/* MODIFICADO: Campo de Hora de la Cita con la lista en formato 12h AM/PM */}
               <FormField
                 control={form.control}
                 name="horaCita"

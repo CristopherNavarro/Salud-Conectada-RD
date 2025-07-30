@@ -1,11 +1,4 @@
 'use server';
-/**
- * @fileOverview A chatbot flow using Genkit and Gemini.
- *
- * - chat - A function that handles the chat conversation.
- * - ChatInput - The input type for the chat function.
- * - ChatOutput - The return type for the chat function.
- */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';

@@ -2,17 +2,13 @@
 
 import { chat } from "@/ai/flows/chat";
 
-// --- NOTA DE PRODUCCIÓN ---
-// Reemplaza las siguientes URLs de placeholder con tus URLs de producción reales de n8n.
-const N8N_URL_BASE = "https://monkey-adapting-cub.ngrok-free.app"; // O tu dominio
+const N8N_URL_BASE = "https://monkey-adapting-cub.ngrok-free.app";
 
 const WEBHOOK_URLS = {
   citas: `${N8N_URL_BASE}/webhook/pacientes`,
   voluntarios: `${N8N_URL_BASE}/webhook/voluntarios`,
   donaciones: `${N8N_URL_BASE}/webhook/donaciones`,
 };
-
-// --- Funciones de Formulario ---
 
 export async function handleAppointmentSubmission(prevState: any, data: any) {
   try {
@@ -73,9 +69,6 @@ export async function handleDonationSubmission(prevState: any, data: any) {
     return { message: 'Hubo un error al procesar tu donación. Inténtalo de nuevo.', status: 'error' };
   }
 }
-
-
-// --- Función del Chatbot (Versión con Genkit) ---
 
 export async function handleChatSubmission(userMessage: string): Promise<string> {
   try {

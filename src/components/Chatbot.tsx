@@ -5,7 +5,6 @@ import { Bot, Send, X, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { handleChatSubmission } from '@/lib/actions';
 
-// Definiendo el tipo para los mensajes
 interface Message {
   text: string;
   sender: 'user' | 'bot';
@@ -93,7 +92,7 @@ const Chatbot: React.FC = () => {
         <div className="p-4 rounded-t-2xl text-white bg-gradient-to-br from-purple-600 to-blue-500 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <BotIcon />
+              <Bot />
             </div>
             <div>
               <h3 className="font-bold text-lg">VIA</h3>
@@ -117,7 +116,7 @@ const Chatbot: React.FC = () => {
               >
                 {msg.sender === 'bot' && (
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center shrink-0">
-                    <BotIcon />
+                    <Bot />
                   </div>
                 )}
                 <div
@@ -135,7 +134,7 @@ const Chatbot: React.FC = () => {
             {isLoading && (
               <div className="flex items-start gap-3 self-start">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center shrink-0">
-                    <BotIcon />
+                    <Bot />
                   </div>
                 <div className="p-3 rounded-2xl bg-gray-200 dark:bg-gray-700 flex items-center gap-2">
                   <span className="w-2 h-2 bg-gray-400 rounded-full animate-pulse delay-0"></span>

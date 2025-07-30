@@ -31,14 +31,14 @@ export function DonacionForm() {
     defaultValues: {
       nombreDonante: "",
       telefonoContacto: "",
-      email: "", // Added email to default values
+<      email: "",
       descripcionInsumo: "",
     },
   });
 
   function onSubmit(data: DonacionSchema) {
     startTransition(async () => {
-      const result = await handleDonationSubmission(null, data); // Pass data object directly
+      const result = await handleDonationSubmission(null, data);
       if (result.status === 'success') {
         toast({
           title: "¡Gracias por tu generosidad!",

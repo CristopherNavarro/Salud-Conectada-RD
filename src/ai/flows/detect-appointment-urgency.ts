@@ -1,11 +1,4 @@
 'use server';
-/**
- * @fileOverview Determines the urgency of a patient's appointment request based on their description of the medical issue.
- *
- * - detectAppointmentUrgency - A function that assesses the urgency of a patient's appointment request.
- * - DetectAppointmentUrgencyInput - The input type for the detectAppointmentUrgency function.
- * - DetectAppointmentUrgencyOutput - The return type for the detectAppointmentUrgency function.
- */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';

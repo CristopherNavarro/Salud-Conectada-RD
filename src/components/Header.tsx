@@ -53,7 +53,6 @@ export function Header() {
             </Sheet>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          {/* The mobile logo is now inside the flex container above */}
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
             {navLinks.map(({ href, label }) => (
               <Link
