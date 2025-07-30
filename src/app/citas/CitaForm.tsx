@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useTransition } from "react";
 import { CalendarIcon, Loader2 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { es } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
@@ -217,7 +217,7 @@ export function CitaForm() {
                           )}
                         >
                           {field.value ? (
-                            format(new Date(field.value.split('/').reverse().join('-')), "PPP", { locale: es })
+                            format(parse(field.value, "dd/MM/yyyy", new Date()), "PPP", { locale: es })
                           ) : (
                             <span>Seleccione una fecha</span>
                           )}
@@ -228,7 +228,7 @@ export function CitaForm() {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value ? new Date(field.value.split('/').reverse().join('-')) : undefined}
+                        selected={field.value ? parse(field.value, "dd/MM/yyyy", new Date()) : undefined}
                         onSelect={(date) => field.onChange(date ? format(date, 'dd/MM/yyyy') : '')}
                         disabled={(date) =>
                           date < new Date() || date < new Date("1900-01-01")
