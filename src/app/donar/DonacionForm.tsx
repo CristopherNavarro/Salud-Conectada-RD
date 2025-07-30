@@ -31,7 +31,7 @@ export function DonacionForm() {
     defaultValues: {
       nombreDonante: "",
       telefonoContacto: "",
-<      email: "",
+      email: "",
       descripcionInsumo: "",
     },
   });
