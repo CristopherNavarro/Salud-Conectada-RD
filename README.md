@@ -22,7 +22,7 @@ Salud Conectada RD es una aplicación web que facilita el acceso a servicios de 
 - **Formularios**: React Hook Form, Zod
 - **IA**: Google Genkit, OpenRouter API
 - **Integraciones**: N8N webhooks
-- **Hosting**: Netlify/Vercel
+- **Hosting**: Netlify/Vercel.
 
 ## 🚀 Instalación y Desarrollo
 
